@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jira Ticket Delay Predictor</title>
+    <!-- CSS path matching static/css/style.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>⏱️ Jira Ticket Delay & SLA Risk Predictor</h2>
+        <p class="subtitle">Inference Engine</p>
+        
+        <form method="POST" action="/">
+            <div class="form-group">
+                <label for="summary">Ticket Summary / Title:</label>
+                <input type="text" id="summary" name="summary" placeholder="e.g., Fix database timeout on checkout" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="priority">Priority:</label>
+                    <select id="priority" name="priority">
+                        <option value="Low">Low</option>
+                        <option value="Medium" selected>Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+
+                <div class="form-group col">
+                    <label for="story_points">Story Points (Effort):</label>
+                    <select id="story_points" name="story_points">
+                        <option value="1.0">1.0 SP</option>
+                        <option value="2.0" selected>2.0 SP</option>
+                        <option value="3.0">3.0 SP</option>
+                        <option value="5.0">5.0 SP</option>
+                        <option value="8.0">8.0 SP</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="assignee">Assignee:</label>
+                    <select id="assignee" name="assignee">
+                        {% for user in assignees %}
+                        <option value="{{ user }}">{{ user }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="created_date">Created Date:</label>
+                    <input type="date" id="created_date" name="created_date" required>
+                </div>
+
+                <div class="form-group col">
+                    <label for="due_date">Target Due Date:</label>
+                    <input type="date" id="due_date" name="due_date" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn">🔍 Predict Delivery Status</button>
+        </form>
+    </div>
+</body>
+</html>

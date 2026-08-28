@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Assessment</title>
+    <!-- CSS path matching static/css/style.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container result-card">
+        <h2>📊 Jira SLA Prediction Assessment</h2>
+
+        <div class="status-banner {% if is_overdue %}status-danger{% else %}status-success{% endif %}">
+            <h3>{{ result_status }}</h3>
+            <p>{{ confidence_text }}</p>
+        </div>
+
+        <div class="details-table">
+            <table>
+                <tr><td><b>Ticket Summary:</b></td><td>{{ summary }}</td></tr>
+                <tr><td><b>Priority:</b></td><td>{{ priority }}</td></tr>
+                <tr><td><b>Story Points:</b></td><td>{{ story_points }} SP</td></tr>
+                <tr><td><b>Assignee:</b></td><td>{{ assignee }} ({{ workload }} active tickets)</td></tr>
+                <tr><td><b>Timeline Window:</b></td><td>{{ allotted_days }} Days ({{ created_date }} to {{ due_date }})</td></tr>
+            </table>
+        </div>
+
+        <div class="explanation">
+            {% if is_overdue %}
+                <p>⚠️ <b>Risk Factors:</b> The allotted timeline of {{ allotted_days }} days is tight relative to {{ story_points }} SP and assignee workload ({{ workload }} tickets).</p>
+            {% else %}
+                <p>✅ <b>Assessment:</b> The allotted timeline of {{ allotted_days }} days provides a sufficient buffer for delivery.</p>
+            {% endif %}
+        </div>
+
+        <a href="/" class="btn-secondary">⬅️ Predict Another Ticket</a>
+    </div>
+</body>
+</html>
