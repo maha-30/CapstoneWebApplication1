@@ -71,6 +71,24 @@ def home():
         result_status = "🚨 HIGH DELAY RISK (OVERDUE)" if is_overdue else "✅ ON TRACK (ON-TIME DELIVERY)"
         confidence_text = f"{delay_prob:.1f}% Delay Risk" if is_overdue else f"{(100 - delay_prob):.1f}% On-Time Confidence"
 
+        # 1. Timeline Validation Rule
+        if allotted_days < 1:
+            return render_template(
+                "result.html",
+                result_status="🚨 HIGH DELAY RISK (IMMEDIATE BREACH)",
+                confidence_text="100.0% Risk",
+                explanation="The target due date cannot be the same day or before the creation date."
+            )
+
+# 2. Unassigned Ticket Blocker
+        if assignee == "Unassigned":
+            return render_template(
+                "result.html",
+                 result_status="🚨 HIGH DELAY RISK (UNASSIGNED)",
+                confidence_text="99.0% Risk",
+                explanation="Ticket is currently unassigned with no owner to execute within the SLA."
+         )
+
         return render_template(
             "result.html",
             summary=summary,
